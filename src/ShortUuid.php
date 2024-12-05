@@ -31,7 +31,7 @@ final class ShortUuid
     /**
      * @param array|null $alphabet
      */
-    public function __construct(array $alphabet = null)
+    public function __construct(?array $alphabet = null)
     {
         if (null !== $alphabet) {
             $this->setAlphabet($alphabet);
