@@ -16,7 +16,7 @@ final class ShortUuid
     /**
      * @var array
      */
-    private $alphabet = [
+    private array $alphabet = [
         '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G',
         'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X',
         'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'm', 'n',
@@ -26,7 +26,7 @@ final class ShortUuid
     /**
      * @var int
      */
-    private $alphabetLength = 57;
+    private int $alphabetLength = 57;
 
     /**
      * @param array|null $alphabet
@@ -43,7 +43,7 @@ final class ShortUuid
      *
      * @param int|string $node A 48-bit number representing the hardware address
      *     This number may be represented as an integer or a hexadecimal string.
-     * @param int $clockSeq A 14-bit number used to help avoid duplicates that
+     * @param int|null $clockSeq A 14-bit number used to help avoid duplicates that
      *     could arise when the clock is set backwards in time or if the node ID
      *     changes.
      *
@@ -160,7 +160,7 @@ final class ShortUuid
     /**
      * @param array $alphabet
      */
-    private function setAlphabet(array $alphabet)
+    private function setAlphabet(array $alphabet): void
     {
         $this->alphabet = $alphabet;
         $this->alphabetLength = count($alphabet);
