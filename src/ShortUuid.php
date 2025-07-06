@@ -16,26 +16,28 @@ final class ShortUuid
     /**
      * @var array
      */
-    private $alphabet = [
-        '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G',
-        'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X',
-        'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'm', 'n',
-        'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
-    ];
+    private $alphabet;
 
     /**
-     * @var int
+     * @var BigInteger
      */
-    private $alphabetLength = 57;
+    private $alphabetLength;
 
     /**
      * @param array|null $alphabet
      */
     public function __construct(array $alphabet = null)
     {
-        if (null !== $alphabet) {
-            $this->setAlphabet($alphabet);
+        if (null == $alphabet) {
+            $alphabet = [
+                '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G',
+                'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X',
+                'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'm', 'n',
+                'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
+            ];
         }
+
+        $this->setAlphabet($alphabet);
     }
 
     /**
@@ -130,9 +132,7 @@ final class ShortUuid
     {
         $output = '';
         while ($number->isPositive()) {
-            $previousNumber = clone $number;
-            $number = $number->dividedBy($this->alphabetLength, RoundingMode::DOWN);
-            $digit = $previousNumber->mod($this->alphabetLength);
+            [$number, $digit] = $number->quotientAndRemainder($this->alphabetLength);
 
             $output .= $this->alphabet[(int)$digit->toInt()];
         }
@@ -163,7 +163,7 @@ final class ShortUuid
     private function setAlphabet(array $alphabet)
     {
         $this->alphabet = $alphabet;
-        $this->alphabetLength = count($alphabet);
+        $this->alphabetLength = BigInteger::of(count($alphabet));
     }
 
     /**
